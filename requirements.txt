@@ -1,0 +1,16 @@
+cliff             # via vinfraclient
+cmd2              # via cliff
+ipaddress         # via vinfraclient
+pbr               # via cliff, stevedore
+prettytable       # via cliff
+progressbar       # via vinfraclient
+cryptography      # via vinfraclient
+pyparsing         # via cliff, cmd2
+pyyaml            # via vinfraclient
+requests          # via vinfraclient
+six               # via vinfraclient, cliff, stevedore
+stevedore         # via cliff
+unicodecsv        # via cliff
+urllib3           # via vinfraclient
+marshmallow==2.21.0       # via vinfraclient
+netaddr           # via vinfraclient

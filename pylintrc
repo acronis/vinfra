@@ -1,0 +1,41 @@
+[BASIC]
+
+# Good variable names which should always be accepted, separated by a comma
+good-names=i,j,k,m,n,p,v
+variable-rgx=([a-z_][a-z0-9_]{1,30}|_)$
+attr-rgx=([a-z_][a-z0-9_]{1,30}|_)$
+
+# Naming style matching correct constant names.
+const-naming-style=any
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+# https://www.python.org/dev/peps/pep-0008/#maximum-line-length
+# "it is okay to increase the line length limit up to 99 characters,
+# provided that comments and docstrings are still wrapped at 72
+# characters."
+max-line-length=99
+
+[DESIGN]
+
+# Maximum number of arguments for function / method.
+max-args=15
+
+# Minimum number of public methods for a class (see R0903).
+min-public-methods=0
+
+
+[MESSAGES CONTROL]
+# C0111 (missing-docstring)
+# R0901 (too-many-ancestors)
+# R0902 (too-many-instance-attributes)
+# R0904 (too-many-public-methods)
+# R0911 (too-many-return-statements)
+# R0912 (too-many-branches)
+# R0914 (too-many-locals)
+# W0511 (fixme)
+disable=C0111,R0901,R0902,R0904,R0911,R0912,R0914,W0511,useless-object-inheritance,broad-except,redefined-outer-name,too-many-lines,inconsistent-return-statements
+
+[pre-commit-hook]
+limit=10

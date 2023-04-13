@@ -1,0 +1,4 @@
+mock
+stestr
+lazy-object-proxy==1.6.0 # via pylint
+voluptuous==0.12.2  # 0.13.0 version is broken for py27
