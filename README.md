@@ -1,26 +1,18 @@
 ## Vinfra
 
-`vinfra` - a command line tool used for manage Acronis Cyber Infrastructure (ACI) or Virtuozzo Hybrid Infrastructure (VHI) from the command line console.
+`vinfra` - A command line tool used to manage Acronis Cyber Infrastructure (ACI) or Virtuozzo Hybrid Infrastructure (VHI).
 
-### Install from sources:
-```bash
-pip install pstorage-ui-client/
-# Enable bash (if you use it) auto completion:
-cd pstorage-ui-client
-make complete > /etc/bash_completion.d/vinfra
-chmod +x /etc/bash_completion.d/vinfra
-source /etc/bash_completion.d/vinfra
-```
 
 > NOTE: Makefile uses python2 by default. If you want to use python3, run:
 > make complete PYTHON=python3 > /etc/bash_completion.d/vinfra
 
-*Install from the current sources (for contribution)*:
+*Install from the current sources*:
 
+### Install from git:
 ```bash
-pip install -e pstorage-ui-client/
+cd local_git_clone_directory
+pip install .
 # Enable bash (if you use it) auto completion:
-cd pstorage-ui-client
 make complete > /etc/bash_completion.d/vinfra
 chmod +x /etc/bash_completion.d/vinfra
 source /etc/bash_completion.d/vinfra

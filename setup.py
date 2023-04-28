@@ -46,6 +46,8 @@ def get_version():
         out, err = p.communicate()
         ret = p.wait()
         if not ret:
+            if isinstance(out, bytes):
+                out = out.decode()
             return '{}+git.{}'.format(version, out.strip())
         elif ret == 127:  # no git tool
             return version
