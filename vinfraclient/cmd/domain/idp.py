@@ -6,6 +6,8 @@ from vinfraclient.cmd.base import Command, Lister, ShowOne
 from vinfraclient.compat import parse_qs, urlparse
 from vinfraclient.utils import find_resource, get_json
 
+from .utils import find_domain
+
 
 def _add_domain_option(parser):
     parser.add_argument(
@@ -94,7 +96,7 @@ class ListDomainIdPs(Lister):
         _add_domain_option(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         return domain.idps_manager.list()
 
 
@@ -106,7 +108,7 @@ class ShowDomainIdP(ShowOne):
         _add_idp_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         idp = find_resource(domain.idps_manager, parsed_args.idp)
         return idp
 
@@ -124,7 +126,7 @@ class CreateDomainIdP(ShowOne):
         )
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         return domain.idps_manager.create(
             parsed_args.name,
             parsed_args.issuer,
@@ -146,7 +148,7 @@ class DeleteDomainIdP(Command):
         _add_idp_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         idp = find_resource(domain.idps_manager, parsed_args.idp)
         return domain.idps_manager.delete(idp)
 
@@ -166,7 +168,7 @@ class SetDomainIdP(ShowOne):
         _add_idp_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         idp = find_resource(domain.idps_manager, parsed_args.idp)
         return idp.update(
             name=parsed_args.name,

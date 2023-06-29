@@ -153,8 +153,9 @@ class ListIface(base.Lister):
             nodes = [find_resource(self.app.vinfra.nodes, parsed_args.node)]
 
         # Note(akurbatov): extend the output with network name to make it a
-        # little bit user friendly
+        # little-bit user-friendly
         with_name = parsed_args.formatter in ['table', 'value']
+        networks_by_id = {}
         if with_name:
             networks = self.app.vinfra.networks.list()
             networks_by_id = dict((net.id, net) for net in networks)
@@ -162,7 +163,7 @@ class ListIface(base.Lister):
         ifaces = []
         for node in nodes:
             for iface in node.ifaces_manager.list():
-                if with_name and iface.network:
+                if with_name and iface.network and iface.network in networks_by_id:
                     args = (iface.network, networks_by_id[iface.network].name)
                     iface.set_info({'network': "{} ({})".format(*args)})
 

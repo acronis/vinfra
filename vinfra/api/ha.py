@@ -39,15 +39,15 @@ class HaTask(base.BackendTask):
         if sys.platform != 'linux2':
             return super(HaTask, self).wait(timeout=timeout)
 
-        # replace global adapter can have some affect to parallel runs
-        adaper_prefix = 'https://'
-        adapter = self.api.session.session.get_adapter(adaper_prefix)
+        # Replace global adapter it can have some affect to parallel runs
+        adapter_prefix = 'https://'
+        adapter = self.api.session.session.get_adapter(adapter_prefix)
         try:
             self.api.session.session.close()
-            self.api.session.session.mount(adaper_prefix, LinuxHTTPAdapter())
+            self.api.session.session.mount(adapter_prefix, LinuxHTTPAdapter())
             return super(HaTask, self).wait(timeout=timeout)
         finally:
-            self.api.session.session.mount(adaper_prefix, adapter)
+            self.api.session.session.mount(adapter_prefix, adapter)
 
 
 class HaConfig(object):
@@ -63,8 +63,10 @@ class HaConfig(object):
         return ha_config
 
     def create_async(self, nodes, virtual_ips, force=None):
-        data = {'nodes': [base.get_id(node) for node in nodes]}
-        data['virtual_ips'] = []
+        data = {
+            'nodes': [base.get_id(node) for node in nodes],
+            'virtual_ips': []
+        }
 
         for network, ip_addr, addr_type in virtual_ips:
             vip = {
@@ -116,11 +118,16 @@ class HaConfig(object):
         data = self.api.client.patch("/ha/nodes/", json=data)
         return HaTask(self.api, data)
 
-    def remove_node_async(self, node, force=False):
-        node_id = base.get_id(node)
-        url = "{}/{}".format("/ha/nodes", node_id)
-        data = dict()
+    def remove_node_async(self, nodes, force=None):
+        data = {}
+        if nodes:
+            data['nodes'] = [base.get_id(node) for node in nodes]
+
         if force is not None:
             data['force'] = force
-        data = self.api.client.delete(url, json=data)
+        elif len(nodes) > 1:
+            # If multiple nodes are to be removed, need to force update the HA.
+            data['force'] = True
+
+        data = self.api.client.delete("/ha/nodes/", json=data)
         return HaTask(self.api, data)

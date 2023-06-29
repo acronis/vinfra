@@ -32,7 +32,7 @@ def parse_network_bulk(value):
         network, traffic_types = value.split(':', 2)
     except Exception:
         raise argparse.ArgumentTypeError("unrecognized format mapping")
-    return (network, parse_list_options(traffic_types))
+    return network, parse_list_options(traffic_types)
 
 
 class ListNetwork(Lister):
@@ -295,8 +295,9 @@ class SetNetwork(TaskCommand):
 
     def do_action(self, parsed_args):
         network = find_resource(self.app.vinfra.networks, parsed_args.network)
-        if (self.app.vinfra.api_version >= api_versions.HCI_VER_45 and
-                self.app.vinfra.api_version < api_versions.HCI_VER_46):
+        if (
+                api_versions.HCI_VER_45 <= self.app.vinfra.api_version < api_versions.HCI_VER_46
+        ):
             network.inbound_allow_list = network.allow_list
             network.inbound_deny_list = network.deny_list
 

@@ -171,7 +171,7 @@ class DeleteUser(Command):
         return user.delete()
 
 
-class ChangePasword(ShowOne):
+class ChangePassword(ShowOne):
     _description = "Change password of an admin panel user."
 
     def do_action(self, parsed_args):

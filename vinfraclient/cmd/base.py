@@ -328,7 +328,7 @@ class Lister(Command, DisplayMixin, cliff_lister.Lister):
         return 'vinfra.formatter.list'
 
     def _configure_parser_inner(self, parser):
-        # sorting from cliff conflicts with sorting
+        # Sorting from cliff conflicts with sorting
         # on the backend side. Do not allow to sort yet.
         for action in parser._actions:  # pylint: disable=protected-access
             if action.dest == 'sort_columns':

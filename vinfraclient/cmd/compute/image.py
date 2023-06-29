@@ -270,7 +270,7 @@ class CreateImage(base.TaskCommand):
 
         # NOTE(akurbatov): request to upload image can get unauthorized
         # response. Client can then try to reauth in background and repeat
-        # request. But stream offset must be then reseted. Make sure user
+        # request. But stream offset must be then reset. Make sure user
         # passed correct login and password to not complicate logic by simple
         # backend API call:
         self.app.vinfra.get_meta()

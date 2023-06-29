@@ -21,6 +21,7 @@ class ManagerAccessor(object):
 
 
 class DomainKeyParams(object):
+
     def __init__(self, *args, **kwargs):
         super(DomainKeyParams, self).__init__(*args, **kwargs)
 
@@ -41,7 +42,8 @@ class DomainKeyParams(object):
         # noinspection PyUnresolvedReferences
         return find_resource(self.app.vinfra.domains, parsed_args.domain)
 
-    def key(self, parsed_args):
+    @staticmethod
+    def key(parsed_args):
         # noinspection PyUnresolvedReferences
         return parsed_args.key
 
@@ -64,14 +66,19 @@ class CreateDomainProps(DomainKeyParams, ManagerAccessor, Command):
             help="Access type"
         )
 
-    def data(self, parsed_args):
+    @staticmethod
+    def data(parsed_args):
         try:
             return json.loads(parsed_args.data)
         except ValueError:
             raise exceptions.ValidationError("data should be a valid JSON object")
 
     def do_action(self, parsed_args):
-        self.mgr.create(self.domain(parsed_args), self.key(parsed_args), parsed_args.access, self.data(parsed_args))
+        self.mgr.create(
+            self.domain(parsed_args),
+            self.key(parsed_args), parsed_args.access,
+            self.data(parsed_args)
+        )
 
 
 class UpdateDomainProps(CreateDomainProps):

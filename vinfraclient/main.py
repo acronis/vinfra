@@ -165,7 +165,7 @@ class VinfraApp(App):
 
     def run_subcommand(self, argv):
         if argv[0] == 'help':
-            # WA cliff to unable print help with optional command args
+            # WA cliff to be unable print help with optional command args
             for arg in list(argv):
                 if arg.startswith('-'):
                     argv.remove(arg)
@@ -189,7 +189,7 @@ class VinfraApp(App):
                 "'VINFRA_TEST_MODE' environment variable.\n")
             os.environ['VINFRA_TEST_MODE'] = os.environ['TEST_VINFRA_MODE']
         if os.environ.get('VINFRA_TEST_MODE'):
-            # For TESTING only. Admin must be authorized early wtih session
+            # For TESTING only. Admin must be authorized early with session
             # cached. Change TaskManager's 'api' for checking a task status.
             # Added to perform testing domain users who haven't access to the
             # task_detail endpoint.

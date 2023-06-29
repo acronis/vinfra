@@ -5,6 +5,7 @@ from vinfraclient import utils
 
 
 class InlineParser(argparse.ArgumentParser):
+
     def __init__(self):
         super(InlineParser, self).__init__(add_help=False)
 
@@ -79,7 +80,7 @@ class PolicyInlineParser(InlineParser):
         return {'value': value}
 
     def parse_value(self, value):
-        if not '=' in value:
+        if '=' not in value:
             value = 'id={}'.format(value)
         return super(PolicyInlineParser, self).parse_value(value)
 
@@ -118,7 +119,7 @@ class EndpointGroupInlineParser(InlineParser):
             )
 
     def parse_value(self, value):
-        if not '=' in value:
+        if '=' not in value:
             value = 'id={}'.format(value)
         parsed_args = super(EndpointGroupInlineParser, self).parse_value(value)
         if parsed_args.name and not parsed_args.endpoints:

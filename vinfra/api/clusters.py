@@ -64,8 +64,8 @@ class ClusterManager(base.Manager):
     def list(self):
         return self._list("/clusters")
 
-    def get(self, cluser):
-        cluster_id = base.get_id(cluser)
+    def get(self, cluster):
+        cluster_id = base.get_id(cluster)
         return self._get("/clusters/{}".format(cluster_id))
 
     def create_async(self, node, cluster_name, disks=None, encryption=None):

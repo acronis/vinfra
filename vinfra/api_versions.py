@@ -2,7 +2,7 @@ import collections
 import functools
 import re
 
-from vinfra import exceptions
+from vinfra import compat, exceptions
 
 
 _METHODS = collections.defaultdict(list)
@@ -40,7 +40,7 @@ class APIVersion(object):
         return cls(version)
 
     def __lt__(self, other):
-        if isinstance(other, (str, basestring)):
+        if isinstance(other, (str, compat.basestring)):
             other = APIVersion(other)
 
         assert isinstance(other, APIVersion)
@@ -48,7 +48,7 @@ class APIVersion(object):
                 (other.ver_major, other.ver_middle, other.ver_minor))
 
     def __eq__(self, other):
-        if isinstance(other, (str, basestring)):
+        if isinstance(other, (str, compat.basestring)):
             other = APIVersion(other)
 
         assert isinstance(other, APIVersion)
@@ -56,7 +56,7 @@ class APIVersion(object):
                 (other.ver_major, other.ver_middle, other.ver_minor))
 
     def __gt__(self, other):
-        if isinstance(other, (str, basestring)):
+        if isinstance(other, (str, compat.basestring)):
             other = APIVersion(other)
 
         assert isinstance(other, APIVersion)

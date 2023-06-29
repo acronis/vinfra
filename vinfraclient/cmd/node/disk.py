@@ -123,6 +123,7 @@ class ListDisk(base.Lister):
         'id', 'device', 'type', 'role', 'disk_status', 'used', 'size', 'physical_size',
         'service_id', 'service_status',
     ]
+
     def configure_parser(self, parser):
         required = node_utils.is_remove_client()
         node_group = parser.add_mutually_exclusive_group(required=required)

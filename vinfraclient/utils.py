@@ -301,7 +301,7 @@ class SizeValue(object):
         self.value = None
         if isinstance(size, (int, long, float)):
             self.value = size
-        elif isinstance(size, (str, basestring)):
+        elif isinstance(size, (str, compat.basestring)):
             for mul, suffix_list in self._mapping.items():
                 for suffix in suffix_list:
                     m = re.search(r'^(\d+)%s$' % suffix, size.lower())
@@ -314,7 +314,7 @@ class SizeValue(object):
             raise ValueError('Wrong size value: %s %s' % (size, type(size)))
 
     def humanize(self, suffix='B'):
-        #if self.value == 0:
+        # if self.value == 0:
         #    return '0'
 
         num = self.value
@@ -380,15 +380,16 @@ def join_options(options_list, unset_options=None):
 
     return rv or None
 
+
 def validate_resources_from_operator(manager, value):
     resources = []
     op = ''
     if ':' in value:
         op, vals = value.split(':', 1)
         op += ':'
-        resources = vals.split(',')
+        resources.extend(vals.split(','))
     else:
-        resources = [value]
+        resources.append(value)
 
     resources = find_resources(manager, resources)
     return '{}{}'.format(op, ','.join([r.id for r in resources]))

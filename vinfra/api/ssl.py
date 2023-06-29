@@ -25,7 +25,7 @@ class Ssl(base.VinfraApi):
         if gen_cert:
             data['gen_cert'] = gen_cert
 
-        # By default 'requests' treats files key as filename. Api needs 'form'
+        # By default, 'requests' treats files key as filename. Api needs 'form'
         # value, not 'file'. Forcing None as filename makes API be happy.
         files = {'json': (None, json.dumps(data))}
 

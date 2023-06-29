@@ -10,6 +10,7 @@ from vinfra.utils import flatten_args
 from vinfra.api.abgw.georeplication import GeoReplication
 from vinfra.api.abgw.registrations import AbgwRegistrationsApi
 
+
 # pylint: disable=function-redefined
 class AbgwApi(base.VinfraApi):
 

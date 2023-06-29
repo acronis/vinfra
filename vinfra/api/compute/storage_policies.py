@@ -1,5 +1,7 @@
+from vinfra import api_versions
 from vinfra import exceptions
-from vinfra.api import base, failure_domains
+from vinfra.api import base
+from vinfra.client import ApiV3
 from vinfra.utils import flatten_args
 
 _hidden = object()
@@ -142,12 +144,17 @@ class StoragePolicyManager(base.Manager):
     base_url = "/storage_policies"
 
     def list(self):
-        with failure_domains.api_version(self.client):
+        if self.api.api_version < api_versions.HCI_VER_40:
+            return self._list(self.base_url)
+        with ApiV3(self.api.client):
             return self._list(self.base_url)
 
     def get(self, storage_policy):
         storage_policy_id = base.get_id(storage_policy)
-        with failure_domains.api_version(self.client):
+
+        if self.api.api_version < api_versions.HCI_VER_40:
+            return self._get("{}/{}".format(self.base_url, storage_policy_id))
+        with ApiV3(self.api.client):
             return self._get("{}/{}".format(self.base_url, storage_policy_id))
 
     def create(self, name, tier, redundancy, failure_domain, qos=None,
@@ -168,7 +175,9 @@ class StoragePolicyManager(base.Manager):
         if params:
             data['params'] = params
 
-        with failure_domains.api_version(self.client):
+        if self.api.api_version < api_versions.HCI_VER_40:
+            return self._post(self.base_url, json=data)
+        with ApiV3(self.api.client):
             return self._post(self.base_url, json=data)
 
     def update(self, storage_policy, name, tier, redundancy, failure_domain, qos=None,
@@ -191,7 +200,9 @@ class StoragePolicyManager(base.Manager):
         if params:
             data['params'] = params
 
-        with failure_domains.api_version(self.client):
+        if self.api.api_version < api_versions.HCI_VER_40:
+            return self._patch(url, json=data)
+        with ApiV3(self.api.client):
             return self._patch(url, json=data)
 
     def delete(self, storage_policy):

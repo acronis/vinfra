@@ -2,7 +2,10 @@ from vinfraclient.cmd.base import ShowOne, Command, Lister
 from vinfraclient.exceptions import ValidationError
 from vinfraclient.utils import find_resource, get_password
 
-from . import utils
+from .utils import (
+    find_domain, parse_assigned_domains, parse_assigned_projects,
+    parse_unassigned_projects
+)
 
 
 def _roles_parser(value):
@@ -133,10 +136,10 @@ class CreateDomainUser(ShowOne):
         )
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
-        assigned_projects = utils.parse_assigned_projects(
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
+        assigned_projects = parse_assigned_projects(
             domain, parsed_args.assigned_projects)
-        assigned_domains = utils.parse_assigned_domains(
+        assigned_domains = parse_assigned_domains(
             self.app.vinfra.domains,
             parsed_args.assigned_domains,
         )
@@ -162,7 +165,7 @@ class DeleteDomainUser(Command):
         _add_user_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         user = find_resource(domain.users_manager, parsed_args.user)
         return user.delete()
 
@@ -221,7 +224,7 @@ class ListDomainUser(Lister):
         if parsed_args.tags:
             filters['tags'] = parsed_args.tags
 
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         return domain.users_manager.list(
             limit=parsed_args.limit, marker=parsed_args.marker,
             filters=filters)
@@ -248,15 +251,15 @@ class SetDomainUser(ShowOne):
         _add_user_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
 
         assigned_projects = (
-            utils.parse_unassigned_projects(
+            parse_unassigned_projects(
                 domain, parsed_args.unassigned_projects) +
-            utils.parse_assigned_projects(
+            parse_assigned_projects(
                 domain, parsed_args.assigned_projects)
         )
-        assigned_domains = utils.parse_assigned_domains(
+        assigned_domains = parse_assigned_domains(
             self.app.vinfra.domains,
             parsed_args.assigned_domains,
             parsed_args.unassigned_domains,
@@ -292,7 +295,7 @@ class ShowDomainUser(ShowOne):
         _add_user_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         user = find_resource(domain.users_manager, parsed_args.user)
         return user
 
@@ -306,7 +309,7 @@ class ListDomainUserGroups(Lister):
         _add_user_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         user = find_resource(domain.users_manager, parsed_args.user)
         return user.list_groups()
 
@@ -319,6 +322,6 @@ class UnlockDomainUser(Command):
         _add_user_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         user = find_resource(domain.users_manager, parsed_args.user)
         return user.unlock()

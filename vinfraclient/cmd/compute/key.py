@@ -89,11 +89,11 @@ class CreateComputeSshKey(ShowOne):
             if self.app.options.verbose_level:
                 sys.stderr.write('Enter Public key:\n')
             return sys.stdin.readline()
-        public_key_normilized_path = os.path.normpath(
+        public_key_normalized_path = os.path.normpath(
             parsed_args.public_key
         )
         return self._validate_public_key_path(
-            public_key_normilized_path
+            public_key_normalized_path
         )
 
     def do_action(self, parsed_args):

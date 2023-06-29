@@ -3,10 +3,9 @@ import hashlib
 import json
 import os
 
-from vinfra import exceptions
+from vinfra import compat, exceptions
 from vinfra.api import base
 from vinfra.api.compute.base import Manager
-from vinfra.compat import md5
 from vinfra.utils import flatten_args
 
 
@@ -165,7 +164,7 @@ class ImageManager(Manager):
         close_fd = None
         if not hasattr(fdst, 'write'):
             # Looks like fdst is not stream. Make stream.
-            if not isinstance(fdst, basestring):
+            if not isinstance(fdst, compat.basestring):
                 raise ValueError("fdst must be filepath or file-like object, "
                                  "got {}".format(fdst.__class__.__name__))
             if os.path.exists(fdst):
@@ -176,7 +175,7 @@ class ImageManager(Manager):
         len_expected = int(resp.headers['Content-Length'])
         md5_expected = resp.headers['Content-Md5']
 
-        md5ob = md5()
+        md5ob = hashlib.md5()  # nosec
         while True:
             buf = resp.raw.read(16 * 1024)
             if not buf:
@@ -185,7 +184,7 @@ class ImageManager(Manager):
             md5ob.update(buf)
 
         if fdst.tell() != len_expected:
-            msg = 'File length mismatch (epxect {}, got {})'.format(
+            msg = 'File length mismatch (expect {}, got {})'.format(
                 len_expected, fdst.tell())
             raise exceptions.VinfraError(msg)
 

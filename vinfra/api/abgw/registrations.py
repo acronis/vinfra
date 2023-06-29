@@ -65,6 +65,8 @@ class AbgwRegistrationsApi(base.Manager):
             username,  # type: str
             password,  # type: str
             location=None,  # type: str
+            primary_storage_id=None,  # type: str
+            failback_storage_id=None,  # type: str
     ):
         data = {
             'name': name,
@@ -75,6 +77,10 @@ class AbgwRegistrationsApi(base.Manager):
         }
         if location is not None:
             data['location'] = location
+        if primary_storage_id is not None:
+            data['primary_storage_id'] = primary_storage_id
+        if failback_storage_id is not None:
+            data['failback_storage_id'] = failback_storage_id
         return self.client.post_async(self.base_url, json=data)
 
     def create_true_image_async(

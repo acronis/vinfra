@@ -10,7 +10,7 @@ def flatten_args(**kwargs):
 def only_obj(lst, msg=""):
     if len(lst) != 1:
         raise Exception(
-            "Unexpected elememts count={0}. ".format(len(lst)) + msg
+            "Unexpected elements count={0}. ".format(len(lst)) + msg
         )
 
     return lst[0]

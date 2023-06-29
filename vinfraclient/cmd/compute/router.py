@@ -138,7 +138,7 @@ class ListRouters(base.Lister):
             '--project',
             metavar='<project>',
             action='filter',
-            operators='in',
+            operators=('in', 'contains'),
             help='List routers that belong to projects with the specified names or IDs. '
                  'Can only be performed by system administrators.'
         )
@@ -354,7 +354,7 @@ class RouterInterfaceList(base.Lister):
         ifaces = router.interfaces.list()
 
         # Note(akurbatov): extend the output with network name to make it a
-        # little bit user friendly
+        # little-bit user-friendly
         with_name = parsed_args.formatter == 'table'
         if with_name:
             networks = self.app.vinfra.compute.networks.list()

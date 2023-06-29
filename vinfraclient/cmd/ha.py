@@ -163,12 +163,13 @@ class AddNodeToHA(TaskCommand):
 
 
 class RemoveNodeFromHA(TaskCommand):
-    _description = "Remove a node from the HA configuration."
+    _description = "Remove node from the HA configuration."
 
     def configure_parser(self, parser):
         parser.add_argument(
-            "node",
+            "nodes",
             metavar="<node>",
+            nargs='+',
             help="Node ID or hostname to remove")
         parser.add_argument(
             "--force",
@@ -178,6 +179,6 @@ class RemoveNodeFromHA(TaskCommand):
         )
 
     def do_action(self, parsed_args):
-        node = find_resource(self.app.vinfra.nodes, parsed_args.node)
-        return self.app.vinfra.ha.remove_node_async(node=node,
+        nodes = find_resources(self.app.vinfra.nodes, parsed_args.nodes)
+        return self.app.vinfra.ha.remove_node_async(nodes=nodes,
                                                     force=parsed_args.force)

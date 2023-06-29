@@ -10,10 +10,11 @@ from vinfra.api.clusters import ClusterManager
 from vinfra.api.compute import Compute
 from vinfra.api.cs.automatic_disk_replacement import AutomaticDiskReplacementSettings
 from vinfra.api.cs.multiple_cses import MultipleCSesSettings
-from vinfra.api.domains import DomainManager
+from vinfra.api.domains import DomainManager, UserDomainManager
 from vinfra.api.domain_props import (
     DomainPropsManager, DomainPropsAccessManager, DomainsKeysManager
 )
+from vinfra.api.filebeat import FilebeatConfig
 from vinfra.api.ha import HaConfig
 from vinfra.api.locations import LocationsConfigManager, RoomsManager, RowsManager, RacksManager
 from vinfra.api.logging_service import LogSeverityManager
@@ -23,7 +24,7 @@ from vinfra.api.misc import Dns
 from vinfra.api.network import NetworkManager, TrafficTypeManager
 from vinfra.api.nodes import NodeManager, Node
 from vinfra.api.ram_reservation_info import RamReservationInfoManager
-from vinfra.api.settings import LocaleManager, CsesConfigManager
+from vinfra.api.settings import LocaleManager, CsesConfigManager, NotificationsManager
 from vinfra.api.software_updates import SoftwareUpdatesManager
 from vinfra.api.ssl import Ssl
 from vinfra.api.tasks import TaskManager
@@ -61,15 +62,16 @@ class _DomainProps(object):
 
 class Vinfra(object):
 
-    def __init__(self, url, auth=None, session=None):
+    def _create_client(self, url, auth, session):
         if session is None:
-            self.session = Session(url, auth=auth)
-        else:
-            if not isinstance(session, Session):
-                raise Exception("session must be Session type")
-            self.session = session
-
+            session = Session(url, auth=auth)
+        elif not isinstance(session, Session):
+            raise Exception("session must be Session type")
+        self.session = session
         self.client = Client(self)
+
+    def __init__(self, url, auth=None, session=None):
+        self._create_client(url, auth, session)
 
         self.alerts = AlertManager(self)
         self.alert_types = AlertTypeManager(self)
@@ -79,6 +81,9 @@ class Vinfra(object):
         self.compute = Compute(self)
         self.dns = Dns(self)
         self.domains = DomainManager(self)
+        self.user_domains = UserDomainManager(self)
+        self.email_notifications = NotificationsManager(self)
+        self.filebeat = FilebeatConfig(self)
         self.ha = HaConfig(self)  # pylint: disable=invalid-name
         self.nodes = NodeManager(self)
         self.locales = LocaleManager(self)

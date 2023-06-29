@@ -288,6 +288,9 @@ class Server(base.Resource):
     def list_tags(self):
         return self.manager.list_tags(self)
 
+    def set_password(self, *args):
+        return self.manager.set_password(self, *args)
+
 
 class ServerManager(Manager):
     resource_class = Server
@@ -534,6 +537,10 @@ class ServerManager(Manager):
         url = "{}/{}/tags".format(self.base_url, base.get_id(server))
         return self.client.get(url)['data']
 
+    def set_password(self, server, password):
+        url = "{}/{}/password_set".format(self.base_url, base.get_id(server))
+        data = {'password': password}
+        return self.client.post(url, json=data, log=False)
 
 class ServerNetwork(base.Resource):
     pass

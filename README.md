@@ -2,20 +2,12 @@
 
 `vinfra` - A command line tool used to manage Acronis Cyber Infrastructure (ACI) or Virtuozzo Hybrid Infrastructure (VHI).
 
-
-> NOTE: Makefile uses python2 by default. If you want to use python3, run:
-> make complete PYTHON=python3 > /etc/bash_completion.d/vinfra
-
 *Install from the current sources*:
 
 ### Install from git:
 ```bash
 cd local_git_clone_directory
 pip install .
-# Enable bash (if you use it) auto completion:
-make complete > /etc/bash_completion.d/vinfra
-chmod +x /etc/bash_completion.d/vinfra
-source /etc/bash_completion.d/vinfra
 ```
 
 #### Install from the yum repository:
@@ -32,7 +24,7 @@ source /etc/bash_completion.d/vinfra
 *You can set up environment variables to make commands shorter:*
 
 ```bash
-export VINFRA_PORTAL=portal
+export VINFRA_PORTAL=https://<admin_ui>:8888
 export VINFRA_USERNAME=username
 export VINFRA_PASSWORD=password
 ```

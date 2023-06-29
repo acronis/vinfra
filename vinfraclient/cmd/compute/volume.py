@@ -84,7 +84,7 @@ class ListVolume(base.Lister):
             '--id',
             metavar='<id>',
             action='filter',
-            operators='in',
+            operators=('in', 'contains'),
             help='Show a volume with the specified ID or list volumes using '
                  'a filter.'
         )

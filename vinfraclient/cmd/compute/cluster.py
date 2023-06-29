@@ -127,8 +127,7 @@ def _add_common_options(parser):
         type=lambda x: x.split(','),
         help="A comma-separated list of CPU features to enable or disable for virtual machines.\n"
              "For example, 'ssbd,+vmx,-mpx' will enable ssbd and vmx and disable mpx.\n"
-             "Note that if the first feature starts with a dash, the following syntax is used:"
-             " --cpu-features='-vmx'."
+             "Note that if the first feature starts with a dash, the following syntax is used: --cpu-features='-vmx'."
     )
     parser.add_argument(
         "--enable-k8saas",
@@ -692,6 +691,7 @@ class RemoveComputeStorage(TaskCommand):
                                         parsed_args.name)
         return compute_storage.delete_async()
 
+
 class ShowTask(ShowOne):
     _description = "Show compute task details."
 
@@ -704,6 +704,7 @@ class ShowTask(ShowOne):
     def do_action(self, parsed_args):
         return self.app.vinfra.compute.cluster.show_task(parsed_args.task_id)
 
+
 class RetryTask(ShowOne):
     _description = "Retry a failed compute task."
 
@@ -715,6 +716,7 @@ class RetryTask(ShowOne):
 
     def do_action(self, parsed_args):
         return self.app.vinfra.compute.cluster.retry_task(parsed_args.task_id)
+
 
 class AbortTask(ShowOne):
     _description = "Abort a failed compute task."

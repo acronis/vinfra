@@ -3,6 +3,8 @@ import argparse
 from vinfraclient.cmd.base import Command, Lister, ShowOne
 from vinfraclient.utils import find_resource
 
+from .utils import find_domain
+
 
 def _roles_parser(value):
     return [name.lower() for name in value.split(',')]
@@ -110,7 +112,7 @@ class ListDomainProjects(Lister):
         if parsed_args.tags:
             filters['tags'] = parsed_args.tags
 
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         return domain.projects_manager.list(
             limit=parsed_args.limit, marker=parsed_args.marker,
             filters=filters)
@@ -124,7 +126,7 @@ class ShowDomainProject(ShowOne):
         _add_project_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         project = find_resource(domain.projects_manager, parsed_args.project)
         return project
 
@@ -146,7 +148,7 @@ class CreateDomainProject(ShowOne):
         )
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         parent = None
         if parsed_args.parent:
             parent = find_resource(domain.projects_manager, parsed_args.parent)
@@ -164,7 +166,7 @@ class DeleteDomainProject(Command):
         _add_project_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         project = find_resource(domain.projects_manager, parsed_args.project)
         return domain.projects_manager.delete(project)
 
@@ -183,7 +185,7 @@ class SetDomainProject(ShowOne):
         _add_project_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         project = find_resource(domain.projects_manager, parsed_args.project)
         return project.update(
             name=parsed_args.name, description=parsed_args.description,
@@ -200,7 +202,7 @@ class ListProjectUsers(Lister):
         _add_project_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         project = find_resource(domain.projects_manager, parsed_args.project)
         return project.list_users()
 
@@ -214,7 +216,7 @@ class RemoveProjectUser(Command):
         _add_project_arg(parser)
 
     def do_action(self, parsed_args):
-        domain = find_resource(self.app.vinfra.domains, parsed_args.domain)
+        domain = find_domain(self.app.vinfra, parsed_args.domain)
         project = find_resource(domain.projects_manager, parsed_args.project)
         user = find_resource(domain.users_manager, parsed_args.user)
 

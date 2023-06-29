@@ -1,1 +1,1 @@
-from vinfra.api.domains.domains import DomainManager
+from vinfra.api.domains.domains import DomainManager, UserDomainManager

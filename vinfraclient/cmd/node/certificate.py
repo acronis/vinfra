@@ -8,7 +8,7 @@ class RenewIPsecCert(base.TaskCommand):
     def configure_parser(self, parser):
         parser.add_argument(
             "node",
-            help="Node ID or hostname"
+            help="Node ID or hostname",
         )
 
     def do_action(self, parsed_args):

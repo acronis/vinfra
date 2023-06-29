@@ -294,7 +294,7 @@ class ACLManager(base.Manager):
             base.get_id(self.target_group))
 
     def list(self):
-        return [self.resource_class(self, acl) for acl in  self.target_group.acl]
+        return [self.resource_class(self, acl) for acl in self.target_group.acl]
 
     def delete_async(self, acl):
         wwn = base.get_id(acl)

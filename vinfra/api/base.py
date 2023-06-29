@@ -3,7 +3,7 @@ import logging
 import re
 import time
 
-from vinfra import exceptions
+from vinfra import compat, exceptions
 
 LOG = logging.getLogger(__name__)
 CAMELCASE_REGEX = re.compile(r'[A-Z](?:[a-z0-9]+|[A-Z]*(?=[A-Z]|$))')
@@ -234,7 +234,7 @@ class Manager(VinfraApi):
 
     @staticmethod
     def _format_sort_param(sort):
-        if isinstance(sort, (str, basestring)):
+        if isinstance(sort, (str, compat.basestring)):
             sort = [sort]
 
         sort_array = []
@@ -253,7 +253,6 @@ class Manager(VinfraApi):
             else:
                 sort_array.append(sort_key)
         return ','.join(sort_array)
-
 
     def _list(self, url, limit=None, marker=None, filters=None, sort=None,
               **kwargs):

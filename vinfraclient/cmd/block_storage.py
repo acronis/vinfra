@@ -321,7 +321,6 @@ class ListVolumes(Lister):
     _default_fields = ['id', 'serial', 'name', 'size', 'used_size',
                        'grp_name', 'grp_id', 'lun']
 
-
     def do_action(self, parsed_args):
         cluster = get_cluster(self.app.vinfra)
         return cluster.block_storage.volumes.list()
@@ -518,7 +517,7 @@ class ShowTargetGroupVolume(ShowOne):
         cluster = get_cluster(self.app.vinfra)
         target_group = find_resource(cluster.block_storage.target_groups,
                                      parsed_args.target_group)
-        return  find_resource(target_group.volumes, parsed_args.volume)
+        return find_resource(target_group.volumes, parsed_args.volume)
 
 
 class DetachVolume(TaskCommand):
@@ -547,7 +546,6 @@ class DetachVolume(TaskCommand):
 class ListUsers(Lister):
     _description = "List users."
     _default_fields = ['name']
-
 
     def do_action(self, parsed_args):
         cluster = get_cluster(self.app.vinfra)

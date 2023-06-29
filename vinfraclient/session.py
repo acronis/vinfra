@@ -36,7 +36,9 @@ class Auth(vinfra_session.Auth):
             self.password = None
             raise
 
+
 class CachedAuth(Auth):
+
     def get_filename(self, session):
         hostname = urlparse(session.url).netloc.split(':')[0]
         dir_path = os.path.join(os.path.expanduser("~"), '.vinfra', hostname)

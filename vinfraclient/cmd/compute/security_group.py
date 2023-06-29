@@ -57,8 +57,8 @@ class ListSecurityGroup(base.Lister):
         if parsed_args.id:
             filters['id'] = parsed_args.id
         if parsed_args.project:
-            # Make sure project exists. Otherwise admin user can accidentally
-            # create a SG that belongs to a non-existent project.
+            # Make sure project exists. Otherwise, admin user can accidentally
+            # create an SG that belongs to a non-existent project.
             manager = self.app.vinfra.compute.projects
             filters['project_id'] = utils.validate_resources_from_operator(
                 manager, parsed_args.project)
@@ -125,6 +125,7 @@ class DeleteSecurityGroup(base.Command):
             return sg.delete()
 
         raise ValidationError("System security group cannot be deleted")
+
 
 class SetSecurityGroup(base.ShowOne):
     _description = "Modify a security group."

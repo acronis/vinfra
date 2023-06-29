@@ -24,6 +24,7 @@ class ListTrafficType(Lister):
                                  'allow_list', 'deny_list']
     _default_fields = ['name', 'type', 'exclusive', 'port',
                        'inbound_allow_list', 'inbound_deny_list']
+
     def do_action(self, parsed_args):
         data = self.app.vinfra.traffic_types.list()
         # show elements that do not have 'hidden' attr or hidden=False
@@ -201,8 +202,9 @@ class SetTrafficType(TaskCommand):
     def do_action(self, parsed_args):
         traffic_type = find_resource(self.app.vinfra.traffic_types,
                                      parsed_args.traffic_type)
-        if (self.app.vinfra.api_version >= api_versions.HCI_VER_45 and
-                self.app.vinfra.api_version < api_versions.HCI_VER_46):
+        if (
+                api_versions.HCI_VER_45 <= self.app.vinfra.api_version < api_versions.HCI_VER_46
+        ):
             traffic_type.inbound_allow_list = traffic_type.allow_list
             traffic_type.inbound_deny_list = traffic_type.deny_list
 

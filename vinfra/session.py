@@ -131,9 +131,9 @@ class Auth(object):
                             json=request_json, log=False).json()
         self.domain_id = resp['domain_id']
         self.token = resp['token']
-        self.make_scoped_authenicate(session)
+        self.make_scoped_authenticate(session)
 
-    def make_scoped_authenicate(self, session):
+    def make_scoped_authenticate(self, session):
         if self.project:
             data = self._make_project_authenticate(session)
             self.scoped_token = data['token']
@@ -143,7 +143,7 @@ class Auth(object):
             self.make_authenticate(session)
 
         if self.needs_scoped_reauthenticate():
-            self.make_scoped_authenicate(session)
+            self.make_scoped_authenticate(session)
 
         headers = {}
         if self.scoped_token:
@@ -174,11 +174,13 @@ class TCPKeepAliveHTTPAdapter(HTTPAdapter):
 
 class Session(object):
     def __init__(self, url, auth=None, session=None):
-        """ Session controlled communication client.
+        """Session controlled communication client.
 
         :param url: backend url
         :param auth: session authentication implementation
         :type auth: vinfra.session.BaseAuth
+        :param session: session for rest requests
+        :type session: requests.Session
         """
         self.url = url
         self.auth = auth
@@ -237,9 +239,9 @@ class Session(object):
             data = json.loads(body)
 
             # /api/v2/login
-            #if 'token' in data:
+            # if 'token' in data:
             #    data['token'] = '<removed>'
-            #if 'scoped_token' in data:
+            # if 'scoped_token' in data:
             #    data['scoped_token'] = '<removed>'
 
             return self._json.encode(data)
@@ -289,8 +291,7 @@ class Session(object):
         else:
             text = 'Omitted, Content-Type is set to {}.'.format(content_type)
 
-        string_parts = ['RESP:']
-        string_parts.append('[{}]'.format(resp.status_code))
+        string_parts = ['RESP:', '[{}]'.format(resp.status_code)]
 
         for header_name, header_value in resp.headers.items():
             string_parts.append('{}: {}'.format(
@@ -350,8 +351,8 @@ class Session(object):
 
     @staticmethod
     def _is_connect_error(err):
-        return  isinstance(err, (requests.exceptions.ConnectionError,
-                                 requests.exceptions.Timeout))
+        return isinstance(err, (requests.exceptions.ConnectionError,
+                                requests.exceptions.Timeout))
 
     def _send_request(self, method, url, json=None, log=True,
                       connect_retries=0, connect_retry_delay=0.5,

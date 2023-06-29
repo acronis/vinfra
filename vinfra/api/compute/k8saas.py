@@ -13,7 +13,7 @@ class K8saasClusterCreateTask(base.PollTask):
     def wait(self, timeout=None):
         # set default timeout to 30 minutes
         # +5 minutes extra for additional worker
-        # Fix TaskCommand.task_wait() without default timeout 600 sec
+        # fix TaskCommand.task_wait() without default timeout 600 sec
         # This workaround uses a default progress bar of 10 minutes.
         # If the task runs longer,
         # the progress bar will stop counting after 10 minutes,
@@ -340,7 +340,7 @@ class K8saasNodeGroupManager(Manager):
         self._patch("{}/{}".format(self.base_url, nodegroup_id), json)
         return base.ChainedTask(
             nodegroup,
-            # nodegroup doesn't provide updated_at so
+            # nodegroup doesn't provide updated_at, so
             # we use K8saasClusterStartUpdateTask
             K8saasClusterStartUpdateTask(self.cluster.manager, self.cluster),
             K8saasNodeGroupUpdateTask(self, nodegroup_id))
@@ -355,7 +355,7 @@ class K8saasNodeGroupManager(Manager):
         self._post("{}/{}/upgrade".format(self.base_url, nodegroup_id), json)
         return base.ChainedTask(
             nodegroup,
-            # nodegroup doesn't provide updated_at so
+            # nodegroup doesn't provide updated_at, so
             # we use K8saasClusterStartUpdateTask
             K8saasClusterStartUpdateTask(self.cluster.manager, self.cluster),
             K8saasNodeGroupUpgradeTask(self, nodegroup_id))

@@ -5,10 +5,11 @@ import sys
 
 from git_pylint_commit_hook import commit_hook
 
+
 # overwrite _get_list_of_committed_files to get diff from origin/master
 def _get_list_of_committed_files():
     files = []
-    args = ['git', 'diff', '--name-only', 'origin/master', '--diff-filter=ACM']
+    args = ["git", "diff", "--name-only", "origin/master", "--diff-filter=ACM"]
 
     output = subprocess.check_output(args)
     output = output.decode('utf-8')
@@ -17,6 +18,7 @@ def _get_list_of_committed_files():
             files.append(file_name.strip())
 
     return files
+
 
 # pylint: disable=protected-access
 commit_hook._get_list_of_committed_files = _get_list_of_committed_files

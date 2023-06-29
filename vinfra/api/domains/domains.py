@@ -48,3 +48,11 @@ class DomainManager(base.Manager):
     def delete(self, domain):
         domain_id = base.get_id(domain)
         self._delete("{}/{}".format(self.base_url, domain_id))
+
+
+class UserDomainManager(base.Manager):
+    resource_class = Domain
+    base_url = "/accounts/domains"
+
+    def list(self):
+        return self._list(self.base_url)

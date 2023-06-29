@@ -7,11 +7,15 @@ _log_context = threading.local()
 
 
 class Formatter(logging.Formatter):
+
+    def __init__(self, fmt=None, datefmt=None, **kwargs):
+        if fmt is None:
+            fmt = ("%(asctime)s %(levelname)-8s %(name)s [%(request_id)s] "
+                   "%(message)s")
+        super(Formatter, self).__init__(fmt=fmt, datefmt=datefmt, **kwargs)
+
     def format(self, record):
         record.request_id = get_request_id() or '-'
-        self._fmt = ("%(asctime)s %(levelname)-8s %(name)s [%(request_id)s] "
-                     "%(message)s")
-
         return super(Formatter, self).format(record)
 
 

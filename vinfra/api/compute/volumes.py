@@ -62,6 +62,7 @@ class VolumeExtendTask(base.PollTask):
 
         return self.resource
 
+
 class VolumeDeleteTask(base.PollTask):
     def __init__(self, manager, volume_id):
         self.manager = manager

@@ -73,7 +73,7 @@ class ShowComputeQuotas(ShowOne):
 
         if 'used' in compute['ram']:
             if self.app.vinfra.api_version >= api_versions.HCI_VER_35:
-                ram['used'] = self._safe_mul(ram['used'], 1./ mib)
+                ram['used'] = self._safe_mul(ram['used'], 1. / mib)
             ram_quota['used'] = self._safe_mul(ram['used'], mib)
 
     def _fixup_storage(self, data):
@@ -89,8 +89,7 @@ class ShowComputeQuotas(ShowOne):
         def get_dict(cur_dict, mul):
             rv = {}
             for sp_name, limit in cur_dict.items():
-                fix_limit = {}
-                fix_limit['limit'] = self._safe_mul(limit['limit'], mul)
+                fix_limit = {'limit': self._safe_mul(limit['limit'], mul)}
                 if 'used' in limit:
                     fix_limit['used'] = self._safe_mul(limit['used'], mul)
                 rv[sp_name] = fix_limit

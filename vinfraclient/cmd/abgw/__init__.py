@@ -915,5 +915,5 @@ class ChangeLimitsParams(ClientLimits):
             parsed_args.max_connections,
             parsed_args.max_ingress,
             parsed_args.max_egress,
-            parsed_args.apply_on_all_nodes
+            parsed_args.apply_on_all_nodes,
         )

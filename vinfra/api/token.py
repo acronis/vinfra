@@ -30,19 +30,21 @@ def get_key_and_iv(password, salt, klen=32, ilen=16, msgdgst='md5'):
 
 # borrowed from backend sources:
 def encrypt(password, plaintext, chunk_it=True, msgdgst='md5'):
-    '''
-    Encription compatible with
+    """
+    Encryption compatible with
     $ openssl enc -e -aes-256-cbc -base64 -salt  -pass pass:<password> -n \
       plaintext
     @param password text password
-    @param input plaintext plain text to encode
+    @param plaintext plain text to encode
+    @param chunk_it bool need to chunk or not
+    @param msgdgst algorithm for hash preparation
     @returns base64 encoded string
-    '''
+    """
     try:
         from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
     except ImportError:
         if sys.platform == 'win32':
-            sys.stderr.write('Please, make sure pycrypto is installed\n')
+            sys.stderr.write('Please, make sure cryptography is installed\n')
         raise
 
     salt = os.urandom(8)

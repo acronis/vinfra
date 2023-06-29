@@ -19,15 +19,11 @@ def _valate_members_addresses(load_balancer, members):
         # no valid LB address? we will skip validation for that case
         LOG.warning('Invalid IP address for load balancer:: %s', err)
     else:
-        try:
-            for member in members:
-                if address_version != compat.get_ipaddress_version(
-                        member['address']):
-                    raise ValueError('IP address version mismatch')
-        except ValueError:
-            raise exceptions.ValidationError(
-                'Invalid IP address "{}", only IPv{} members are allowed'
-                ''.format(member['address'], address_version))
+        for member in members:
+            if address_version != compat.get_ipaddress_version(member['address']):
+                raise exceptions.ValidationError(
+                    'Invalid IP address "{}", only IPv{} members are allowed'
+                    ''.format(member['address'], address_version))
 
 
 def _parse_pools_config(config_path):
@@ -417,7 +413,7 @@ class CreatePool(base.TaskCommand):
 
     def do_action(self, parsed_args):
         if parsed_args.healthmonitor:
-            if not 'type' in parsed_args.healthmonitor:
+            if 'type' not in parsed_args.healthmonitor:
                 raise exceptions.ValidationError(
                     'Health monitor type is required.')
         load_balancer = find_resource(self.app.vinfra.compute.load_balancers,

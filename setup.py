@@ -23,7 +23,7 @@ def install_requires(rfile):
     if not os.path.exists(rfile):
         return []
     pkgs = open(rfile).read().strip().splitlines()
-    # NOTE(akurbatov): intentionally remove 'pycrypto' from requirements
+    # NOTE(akurbatov): intentionally remove 'cryptography' from requirements
     # because can't be installed on win32 without aditional C headers.
     if sys.platform == 'win32':
         pkgs = [pkg for pkg in pkgs if not pkg.startswith('cryptography')]
@@ -143,6 +143,9 @@ vinfra_cli_cmds = [
     'cluster_settings_locale_list = vinfraclient.cmd.settings:ListLocale',
     'cluster_settings_locale_show = vinfraclient.cmd.settings:ShowLocale',
     'cluster_settings_locale_set = vinfraclient.cmd.settings:UpdateLocale',
+    'cluster_settings_email-notifications_set = vinfraclient.cmd.settings:SetEmailNotifications',
+    'cluster_settings_email-notifications_show = vinfraclient.cmd.settings:ShowEmailNotificationsSettings',
+    'cluster_settings_email-notifications_disable = vinfraclient.cmd.settings:DisableEmailNotifications',
     'cluster_settings_ssl_show = vinfraclient.cmd.ssl:ShowSsl',
     'cluster_settings_ssl_set = vinfraclient.cmd.ssl:SetSsl',
     'cluster_settings_automatic-disk-replacement_show = vinfraclient.cmd.cs.automatic_disk_replacement:ShowSettings',
@@ -175,7 +178,7 @@ vinfra_cli_cmds = [
     'cluster_network_reconfiguration_show = vinfraclient.cmd.network:NetworkReconfigurationDetails',
     # cluster users
     'cluster_user_create = vinfraclient.cmd.user:CreateUser',
-    'cluster_user_change-password = vinfraclient.cmd.user:ChangePasword',
+    'cluster_user_change-password = vinfraclient.cmd.user:ChangePassword',
     'cluster_user_delete = vinfraclient.cmd.user:DeleteUser',
     'cluster_user_list = vinfraclient.cmd.user:ListUser',
     'cluster_user_list-available-roles = vinfraclient.cmd.user:ListRoles',
@@ -496,6 +499,11 @@ vinfra_cli_cmds = [
     'service_compute_vpn_connection_set = vinfraclient.cmd.compute.vpn:SetIPsecSiteConnection',
     'service_compute_vpn_connection_delete = vinfraclient.cmd.compute.vpn:DeleteIPsecSiteConnection',
     'service_compute_vpn_connection_restart = vinfraclient.cmd.compute.vpn:RestartIPsecSiteConnection',
+    # service filebeat
+    'service_filebeat_config_list = vinfraclient.cmd.filebeat:ListFilebeatConfig',
+    'service_filebeat_config_show = vinfraclient.cmd.filebeat:ShowFilebeatConfig',
+    'service_filebeat_config_set = vinfraclient.cmd.filebeat:SetFilebeatConfig',
+    'service_filebeat_config_set_advanced = vinfraclient.cmd.filebeat:SetFilebeatConfigAdvanced',
     # s3 service
     'service_s3_show = vinfraclient.cmd.s3:ShowS3',
     'service_s3_cluster_create = vinfraclient.cmd.s3:CreateCluster',
@@ -698,8 +706,24 @@ vinfra_cli_cmds_hidden = [
     'service_backup_monitoring_disable = vinfraclient.cmd.abgw:DisableSysinfoConfig',
     'service_backup_monitoring_enable = vinfraclient.cmd.abgw:EnableSysinfoConfig',
     'service_backup_monitoring_update = vinfraclient.cmd.abgw:UpdateSysinfoConfig',
+    # abgw reverse proxy deployment related commands
+    'service_backup_cluster_turn-into-upstream = vinfraclient.cmd.abgw:TurnIntoUpstreamBackupGateway',
+    'service_backup_cluster_rebalance-upstream = vinfraclient.cmd.abgw:RebalanceUpstream',
+    'service_backup_cluster_import-accounts = vinfraclient.cmd.abgw:ImportAccounts',
+    'service_backup_cluster_move-accounts = vinfraclient.cmd.abgw:MoveAccounts',
+    'service_backup_cluster_remove-upstream = vinfraclient.cmd.abgw:RemoveUpstream',
+    'service_backup_cluster_export-upstream = vinfraclient.cmd.abgw:ExportUpstream',
+    'service_backup_registration_disable = vinfraclient.cmd.abgw.registrations:DisableRegistration',
+    'service_backup_registration_enable = vinfraclient.cmd.abgw.registrations:EnableRegistration',
+    'service_backup_registration_export = vinfraclient.cmd.abgw.registrations:ExportRegistration',
+    'service_backup_registration_import = vinfraclient.cmd.abgw.registrations:ImportRegistrations',
     # cluster license
     'cluster_license_spla-unregister = vinfraclient.cmd.license.acronis:UnregisterSPLALicense',
+    # filebeat feature
+    'service_filebeat_config_list = vinfraclient.cmd.filebeat:ListFilebeatConfig',
+    'service_filebeat_config_show = vinfraclient.cmd.filebeat:ShowFilebeatConfig',
+    'service_filebeat_config_set = vinfraclient.cmd.filebeat:SetFilebeatConfig',
+    'service_filebeat_config_set_advanced = vinfraclient.cmd.filebeat:SetFilebeatConfigAdvanced',
 ]
 
 if vendor == VENDOR_VIRTUOZZO:

@@ -40,6 +40,23 @@ class CreateAbgwRegistration(TaskCommand):
             )
         )
         parser.add_argument(
+            "--primary-storage-id",
+            metavar="<primary_storage_id>",
+            required=False,
+            help=(
+                "The ID of the replica storage."
+            )
+        )
+        parser.add_argument(
+            "--failback-storage-id",
+            metavar="<failback_storage_id>",
+            required=False,
+            help=(
+                "The ID of the failback storage which will become primary "
+                "after failback procedure is completed."
+            )
+        )
+        parser.add_argument(
             "--stdin",
             action="store_true",
             help="Use for setting registration password from stdin"
@@ -60,6 +77,8 @@ class CreateAbgwRegistration(TaskCommand):
             username=parsed_args.username,
             password=get_reg_password(parsed_args),
             location=parsed_args.location,
+            primary_storage_id=parsed_args.primary_storage_id,
+            failback_storage_id=parsed_args.failback_storage_id,
         )
 
 
